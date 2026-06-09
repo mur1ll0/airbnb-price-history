@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/index.js" },
+    { "source": "/login.html", "destination": "/public/login.html" },
+    { "source": "/(.*)", "destination": "/public/$1" }
+  ],
+  "cleanUrls": true
+}

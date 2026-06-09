@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Airbnb Price Tracker & Analyzer</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- Top Gradient Bar -->
+    <div class="top-gradient-bar"></div>
+
+    <!-- Header Section -->
+    <header class="main-header">
+      <div class="logo-area">
+        <div class="logo-icon">
+          <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor">
+            <path d="M16 1c-2.008 0-3.583 1.156-4.697 3.327l-.043.088c-.628 1.258-.87 2.65-.956 3.99H7.652c-.67 0-1.312.264-1.787.734s-.748 1.109-.748 1.777v14.168c0 .668.273 1.307.748 1.777.475.47 1.117.734 1.787.734h16.696c.67 0 1.312-.264 1.787-.734s.748-1.109.748-1.777V10.925c0-.668-.273-1.307-.748-1.777s-1.117-.734-1.787-.734H21.7c-.087-1.34-.328-2.732-.956-3.99l-.043-.088C19.583 2.156 18.008 1 16 1zm0 2.222c1.077 0 1.936.634 2.72 2.156.495.96.717 2.052.81 3.122H12.47c.092-1.07.315-2.162.81-3.122.784-1.522 1.643-2.156 2.72-2.156zm-8.348 7.378H24.348c.241 0 .47.094.636.26.166.167.26.393.26.631v14.168c0 .238-.094.464-.26.631s-.395.26-.636.26H7.652c-.241 0-.47-.094-.636-.26s-.26-.393-.26-.631V10.925c0-.238.094-.464.26-.631s.395-.26.636-.26z" />
+          </svg>
+        </div>
+        <div>
+          <h1>Airbnb Price Tracker</h1>
+          <p class="subtitle">Rastreamento inteligente de preços e análise de custo-benefício</p>
+        </div>
+      </div>
+      
+      <div class="actions-area" style="display: flex; align-items: center; gap: 1.2rem;">
+        <button id="btn-sync-all" class="btn btn-secondary flex-btn">
+          <svg class="icon-spin" id="sync-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l.73-.73" />
+          </svg>
+          <span id="sync-text">Atualizar Preços</span>
+        </button>
+        <div class="user-profile" id="user-profile-widget" style="display: flex; align-items: center; gap: 0.8rem; border-left: 1px solid var(--border-color); padding-left: 1.2rem;">
+          <img id="user-avatar" src="" alt="Avatar" style="width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--accent-rose); background: var(--bg-tertiary);" />
+          <div style="display: flex; flex-direction: column; align-items: flex-start;">
+            <span id="user-name" style="font-size: 0.85rem; font-weight: 600; max-width: 120px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-primary);">-</span>
+            <button id="btn-logout" style="background: none; border: none; padding: 0; margin-top: 0.15rem; font-size: 0.75rem; color: var(--accent-rose); cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 0.25rem; outline: none;">
+              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>
+              </svg>
+              Sair
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Stats Grid -->
+    <section class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon purple-gradient">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+            <polyline points="9 22 9 12 15 12 15 22" />
+          </svg>
+        </div>
+        <div class="stat-info">
+          <span class="stat-label">Hospedagens</span>
+          <span id="stat-total-listings" class="stat-value">0</span>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon green-gradient">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 8v4l3 3" />
+          </svg>
+        </div>
+        <div class="stat-info">
+          <span class="stat-label">Melhor Oportunidade</span>
+          <span id="stat-best-deal" class="stat-value truncate-stat">-</span>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon orange-gradient">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
+            <line x1="7" y1="7" x2="7.01" y2="7" />
+          </svg>
+        </div>
+        <div class="stat-info">
+          <span class="stat-label">Desconto Médio</span>
+          <span id="stat-avg-discount" class="stat-value">0%</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Add URL Form -->
+    <section class="form-section glass-panel">
+      <h2>Vincular Nova Hospedagem</h2>
+      <p class="section-desc">Insira um link do Airbnb com parâmetros de datas (check_in / check_out) para iniciar a análise e rastreamento diário.</p>
+      
+      <form id="add-listing-form">
+        <div class="input-group">
+          <input 
+            type="url" 
+            id="listing-url" 
+            placeholder="https://www.airbnb.com.br/rooms/...?" 
+            required 
+            autocomplete="off"
+          >
+          <button type="submit" class="btn btn-primary" id="btn-submit">
+            <span class="btn-text">Adicionar Link</span>
+            <span class="btn-spinner hidden"></span>
+          </button>
+        </div>
+      </form>
+      <div id="form-error" class="error-message hidden"></div>
+      <div id="form-success" class="success-message hidden"></div>
+    </section>
+
+    <!-- Dashboard Content Area (Grouped List) -->
+    <main class="dashboard-main">
+      <div class="section-header-row">
+        <h2>Hospedagens em Análise</h2>
+        <div class="legend">
+          <span class="legend-item"><span class="badge badge-high"></span> Mais Vantajoso</span>
+          <span class="legend-item"><span class="badge badge-med"></span> Moderado</span>
+          <span class="legend-item"><span class="badge badge-low"></span> Menos Vantajoso</span>
+        </div>
+      </div>
+
+      <!-- Container where grouped lists will be rendered -->
+      <div id="listings-grouped-container" class="listings-grouped-wrapper">
+        <div class="loading-state">
+          <span class="spinner"></span>
+          <p>Carregando hospedagens...</p>
+        </div>
+      </div>
+    </main>
+
+  </div>
+
+  <!-- Details & History Modal -->
+  <div id="details-modal" class="modal-overlay hidden">
+    <div class="modal-content glass-panel">
+      <div class="modal-header">
+        <h3 id="modal-title">Detalhes da Hospedagem</h3>
+        <button id="close-modal-btn" class="close-btn">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+      
+      <div class="modal-body">
+        <div class="modal-grid">
+          
+          <!-- Image and Details Column -->
+          <div class="modal-info-col">
+            <div class="modal-image-wrapper">
+              <img id="modal-image" src="" alt="Thumbnail">
+            </div>
+            <div class="modal-meta">
+              <p class="modal-region" id="modal-region"></p>
+              <p class="modal-capacity" id="modal-capacity"></p>
+              <div class="modal-rating-row" id="modal-rating-row"></div>
+              <div class="modal-link-row" style="margin-top: 1rem; display: flex; flex-direction: column; gap: 0.6rem;">
+                <a id="modal-airbnb-link" href="#" target="_blank" class="airbnb-link">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 4px;">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                    <polyline points="15 3 21 3 21 9" />
+                    <line x1="10" y1="14" x2="21" y2="3" />
+                  </svg>
+                  Ver anúncio original no Airbnb
+                </a>
+                <button id="modal-btn-update" class="btn btn-secondary flex-btn" style="width: 100%; font-size: 0.85rem; padding: 0.5rem 1rem; margin-top: 0.25rem;">
+                  <svg id="modal-update-icon" class="icon-spin" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l.73-.73" />
+                  </svg>
+                  <span id="modal-update-text">Atualizar Preço Agora</span>
+                </button>
+              </div>
+            </div>
+            <div class="modal-score-box">
+              <div class="score-header">Custo-Benefício</div>
+              <div class="score-value" id="modal-score-value">-</div>
+              <p class="score-desc" id="modal-score-desc">Calculado a partir do preço relativo na região, avaliação e desconto.</p>
+              <div class="score-breakdown-details" id="modal-score-breakdown">
+                <!-- Breakdown gauges -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Chart and History Column -->
+          <div class="modal-chart-col">
+            <h4>Histórico de Preços</h4>
+            <div class="chart-container">
+              <canvas id="priceHistoryChart"></canvas>
+            </div>
+            <div class="history-table-wrapper">
+              <table class="history-table">
+                <thead>
+                  <tr>
+                    <th>Data</th>
+                    <th>Valor por Noite</th>
+                    <th>Valor Total</th>
+                  </tr>
+                </thead>
+                <tbody id="modal-history-tbody">
+                  <!-- Historical logs -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Initial State Injection -->
+  <script src="app.js"></script>
+</body>
+</html>

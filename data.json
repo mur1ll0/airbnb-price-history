@@ -1,0 +1,193 @@
+{
+  "listings": [
+    {
+      "id": "1070588091988976266",
+      "url": "https://www.airbnb.com.br/rooms/1070588091988976266?check_in=2026-07-07&check_out=2026-07-14&location=Teresina%2C%20PI&search_mode=regular_search&source_impression_id=p3_1780534698_P3IZT7Dtk5aueIZ5&previous_page_section_name=1001&federated_search_id=17e59ab9-aaf5-4a62-84e5-a7df4d93190e",
+      "title": "Hotel Executivo Arrey",
+      "image": "https://a0.muscache.com/im/pictures/hosting/Hosting-1070588091988976266/original/e1454f6f-c602-4ad0-8e1f-ba61822106b3.jpeg",
+      "rating": 4.14,
+      "reviewsCount": 14,
+      "capacity": "2 hóspedes · · 1 quarto · · 1 banheiro",
+      "region": "Teresina",
+      "nights": 7,
+      "isUnavailable": true,
+      "currentPrice": 1390,
+      "originalPrice": 1523,
+      "pricePerNight": 198.57,
+      "originalPricePerNight": 217.57,
+      "discountPercent": 8.73,
+      "checkIn": "2026-07-07",
+      "checkOut": "2026-07-14",
+      "createdAt": "2026-06-04T03:21:09.893Z",
+      "priceHistory": [
+        {
+          "date": "2026-06-09",
+          "pricePerNight": 198.57,
+          "totalPrice": 1390
+        }
+      ]
+    },
+    {
+      "id": "1697780763143612899",
+      "url": "https://www.airbnb.com.br/rooms/1697780763143612899?check_in=2026-07-07&check_out=2026-07-14&search_mode=regular_search&source_impression_id=p3_1780531915_P3mP6Ys_NtHLPQoR&previous_page_section_name=1000&federated_search_id=42a83df9-a0e2-4876-b0c7-2957e3515f17",
+      "title": "AP. localizado a 3.5km dos shoppings",
+      "image": "https://a0.muscache.com/im/pictures/hosting/Hosting-1697780763143612899/original/c273716d-3597-49e2-b08e-6abd46b72fb2.jpeg",
+      "rating": 5,
+      "reviewsCount": 1,
+      "capacity": "9 hóspedes · · 3 quartos · · 4 camas · · 2 banheiros",
+      "region": "Teresina",
+      "nights": 7,
+      "isUnavailable": true,
+      "currentPrice": 1575,
+      "originalPrice": 1738,
+      "pricePerNight": 225,
+      "originalPricePerNight": 248.29,
+      "discountPercent": 9.38,
+      "checkIn": "2026-07-07",
+      "checkOut": "2026-07-14",
+      "createdAt": "2026-06-04T03:21:09.894Z",
+      "priceHistory": [
+        {
+          "date": "2026-06-09",
+          "pricePerNight": 225,
+          "totalPrice": 1575
+        }
+      ]
+    },
+    {
+      "id": "949170531088272458",
+      "url": "https://www.airbnb.com.br/rooms/949170531088272458?check_in=2026-07-07&check_out=2026-07-14&location=Teresina%2C%20PI&search_mode=regular_search&source_impression_id=p3_1780531041_P3rbdxT5Ney38r-K&previous_page_section_name=1001&federated_search_id=c4edd69d-abcb-4c6e-8aeb-a4f7a41cee04",
+      "title": "Flat NOVO próx. ao Aeroporto!",
+      "image": "https://a0.muscache.com/im/pictures/hosting/Hosting-949170531088272458/original/8a452c8b-390d-43b4-9acc-3fd7ce7f7e41.jpeg",
+      "rating": 4.92,
+      "reviewsCount": 86,
+      "capacity": "2 hóspedes · · 1 quarto · · 1 cama · · 1 banheiro",
+      "region": "Teresina",
+      "nights": 7,
+      "isUnavailable": true,
+      "currentPrice": null,
+      "originalPrice": null,
+      "pricePerNight": null,
+      "originalPricePerNight": null,
+      "discountPercent": 0,
+      "checkIn": "2026-07-07",
+      "checkOut": "2026-07-14",
+      "createdAt": "2026-06-04T03:21:09.894Z",
+      "priceHistory": [
+        {
+          "date": "2026-06-09",
+          "pricePerNight": 140,
+          "totalPrice": 980
+        }
+      ]
+    },
+    {
+      "id": "1300253776981892022",
+      "url": "https://www.airbnb.com.br/rooms/1300253776981892022?check_in=2026-07-07&check_out=2026-07-14&search_mode=regular_search&source_impression_id=p3_1780524555_P3LxyZuItkER4p7w&previous_page_section_name=1000&federated_search_id=37ec0bc7-4433-42eb-bb9d-bdbdb51e8242",
+      "title": "Apartamento de Luxo em Teresina",
+      "image": "https://a0.muscache.com/im/pictures/hosting/Hosting-1300253776981892022/original/a1800ba8-58a6-4eb0-a1c6-ba53f97dcaff.jpeg",
+      "rating": 4.87,
+      "reviewsCount": 54,
+      "capacity": "5 hóspedes · · 2 quartos · · 4 camas · · 1 banheiro",
+      "region": "Teresina",
+      "nights": 7,
+      "isUnavailable": true,
+      "currentPrice": 1154,
+      "originalPrice": 1314,
+      "pricePerNight": 164.86,
+      "originalPricePerNight": 187.71,
+      "discountPercent": 12.18,
+      "checkIn": "2026-07-07",
+      "checkOut": "2026-07-14",
+      "createdAt": "2026-06-04T03:21:09.894Z",
+      "priceHistory": [
+        {
+          "date": "2026-06-09",
+          "pricePerNight": 164.86,
+          "totalPrice": 1154
+        }
+      ]
+    },
+    {
+      "id": "1232679968093037043",
+      "url": "https://www.airbnb.com.br/rooms/1232679968093037043?check_in=2026-07-07&check_out=2026-07-14&location=Teresina%2C%20PI&search_mode=regular_search&source_impression_id=p3_1780530878_P3o57PwyDyx2a0Qe&previous_page_section_name=1001&federated_search_id=93654d12-46ce-46a1-85ba-2af9c9632717&scroll_to_review=1576914090676762441&review_page_entrypoint=show_more",
+      "title": "Loft ao lado do Rio Poty Shopping",
+      "image": "https://a0.muscache.com/im/pictures/hosting/Hosting-1232679968093037043/original/af65923a-94b7-444a-8f8c-8cf54558b9e6.jpeg",
+      "rating": 4.77,
+      "reviewsCount": 31,
+      "capacity": "2 hóspedes · · 1 quarto · · 1 cama · · 1 banheiro",
+      "region": "Teresina",
+      "nights": 7,
+      "isUnavailable": true,
+      "currentPrice": 1511,
+      "originalPrice": 1511,
+      "pricePerNight": 215.86,
+      "originalPricePerNight": 215.86,
+      "discountPercent": 0,
+      "checkIn": "2026-07-07",
+      "checkOut": "2026-07-14",
+      "createdAt": "2026-06-09T03:59:59.308Z",
+      "priceHistory": [
+        {
+          "date": "2026-06-09",
+          "pricePerNight": 215.86,
+          "totalPrice": 1511
+        }
+      ]
+    },
+    {
+      "id": "1495085564314693821",
+      "url": "https://www.airbnb.com.br/rooms/1495085564314693821?check_in=2026-07-07&check_out=2026-07-14&location=Teresina%2C%20PI&search_mode=regular_search&source_impression_id=p3_1780525129_P3PvDxSzbwH4OzqB&previous_page_section_name=1001&federated_search_id=755629be-6957-4fc7-9c31-86631b9880c3",
+      "title": "Apartamento Térreo bem Localizado",
+      "image": "https://a0.muscache.com/im/pictures/hosting/Hosting-1495085564314693821/original/a081eadc-c964-40b5-92fe-b5a76786ac41.jpeg",
+      "rating": 4.8,
+      "reviewsCount": 60,
+      "capacity": "3 hóspedes · · 1 quarto · · 2 camas · · 1 banheiro",
+      "region": "Teresina",
+      "nights": 7,
+      "isUnavailable": true,
+      "currentPrice": 986,
+      "originalPrice": 986,
+      "pricePerNight": 140.86,
+      "originalPricePerNight": 140.86,
+      "discountPercent": 0,
+      "checkIn": "2026-07-07",
+      "checkOut": "2026-07-14",
+      "createdAt": "2026-06-09T04:00:43.089Z",
+      "priceHistory": [
+        {
+          "date": "2026-06-09",
+          "pricePerNight": 140.86,
+          "totalPrice": 986
+        }
+      ]
+    },
+    {
+      "id": "1601687075139152739",
+      "url": "https://www.airbnb.com.br/rooms/1601687075139152739?check_in=2026-07-07&check_out=2026-07-14&search_mode=regular_search&photo_id=2484250029&source_impression_id=p3_1780524799_P3RSyjaukdGHpeIT&previous_page_section_name=1000&federated_search_id=21132a3f-f3f7-4303-8031-6e203bacf799",
+      "title": "Apartamento Aconchegante Conforto e tranquilidade",
+      "image": "https://a0.muscache.com/im/pictures/hosting/Hosting-1601687075139152739/original/382ebda4-40ea-4820-98a8-e5b6986dd7a2.jpeg",
+      "rating": 5,
+      "reviewsCount": 3,
+      "capacity": "5 hóspedes · · 1 quarto · · 3 camas · · 2 banheiros",
+      "region": "Teresina",
+      "nights": 7,
+      "isUnavailable": true,
+      "currentPrice": 1295,
+      "originalPrice": 1295,
+      "pricePerNight": 185,
+      "originalPricePerNight": 185,
+      "discountPercent": 0,
+      "checkIn": "2026-07-07",
+      "checkOut": "2026-07-14",
+      "createdAt": "2026-06-09T04:01:00.503Z",
+      "priceHistory": [
+        {
+          "date": "2026-06-09",
+          "pricePerNight": 185,
+          "totalPrice": 1295
+        }
+      ]
+    }
+  ]
+}
