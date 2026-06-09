@@ -8,6 +8,7 @@ import User from './models/User.js';
 import Link from './models/Link.js';
 import PriceRecord from './models/PriceRecord.js';
 import UserLink from './models/UserLink.js';
+import RoomPriceRecord from './models/RoomPriceRecord.js';
 import { parseAirbnbUrl } from './scraper.js';
 
 const app = express();
@@ -203,10 +204,16 @@ app.get('/api/listings/ranked', authenticateToken, async (req, res) => {
     const enrichedLinks = await Promise.all(
       links.map(async (link) => {
         const histories = await PriceRecord.find({ linkId: link._id }).sort({ date: 1 }).lean();
+        const generalHistories = await RoomPriceRecord.find({ roomId: link.roomId }).sort({ date: 1 }).lean();
         return {
           id: link._id,
           ...link,
           priceHistory: histories.map(h => ({
+            date: h.date,
+            pricePerNight: h.pricePerNight,
+            totalPrice: h.totalPrice
+          })),
+          generalPriceHistory: generalHistories.map(h => ({
             date: h.date,
             pricePerNight: h.pricePerNight,
             totalPrice: h.totalPrice
@@ -263,15 +270,18 @@ app.post('/api/listings', authenticateToken, async (req, res) => {
       nights = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) || 1;
     }
 
+    const comboId = `${roomId}_${checkIn}_${checkOut}`;
+
     // Check if the link already exists in MongoDB
-    let link = await Link.findById(roomId);
+    let link = await Link.findById(comboId);
     let isNewLink = false;
 
     if (!link) {
       isNewLink = true;
       // Save placeholder/pending listing
       link = new Link({
-        _id: roomId,
+        _id: comboId,
+        roomId,
         url,
         title: 'Carregando dados do anúncio...',
         region: location || 'Identificando...',
@@ -287,7 +297,7 @@ app.post('/api/listings', authenticateToken, async (req, res) => {
     try {
       const userLink = new UserLink({
         userId: req.user.id,
-        linkId: roomId
+        linkId: comboId
       });
       await userLink.save();
     } catch (ulErr) {
@@ -313,7 +323,7 @@ app.post('/api/listings', authenticateToken, async (req, res) => {
             },
             body: JSON.stringify({
               event_type: 'scrape-listing',
-              client_payload: { linkId: roomId }
+              client_payload: { linkId: comboId }
             })
           });
           
@@ -321,7 +331,7 @@ app.post('/api/listings', authenticateToken, async (req, res) => {
             const errText = await ghResponse.text();
             console.error('GitHub API dispatch failed:', errText);
           } else {
-            console.log(`Successfully dispatched GitHub Action to scrape room ${roomId}`);
+            console.log(`Successfully dispatched GitHub Action to scrape room ${comboId}`);
           }
         } catch (ghErr) {
           console.error('Failed to trigger GitHub Action dispatch:', ghErr.message);
@@ -334,7 +344,7 @@ app.post('/api/listings', authenticateToken, async (req, res) => {
             const scrapedData = await scrapeListing(url);
             
             // Map the parsed properties
-            await Link.findByIdAndUpdate(roomId, {
+            await Link.findByIdAndUpdate(comboId, {
               title: scrapedData.title,
               image: scrapedData.image,
               rating: scrapedData.rating,
@@ -353,16 +363,21 @@ app.post('/api/listings', authenticateToken, async (req, res) => {
             if (scrapedData.currentPrice !== null) {
               const todayStr = new Date().toISOString().split('T')[0];
               await PriceRecord.findOneAndUpdate(
-                { linkId: roomId, date: todayStr },
+                { linkId: comboId, date: todayStr },
+                { pricePerNight: scrapedData.pricePerNight, totalPrice: scrapedData.currentPrice },
+                { upsert: true }
+              );
+              await RoomPriceRecord.findOneAndUpdate(
+                { roomId, date: todayStr },
                 { pricePerNight: scrapedData.pricePerNight, totalPrice: scrapedData.currentPrice },
                 { upsert: true }
               );
             }
-            console.log(`Local background scraping completed for Room ${roomId}`);
+            console.log(`Local background scraping completed for Room ${comboId}`);
           } catch (scrapeErr) {
-            console.error(`Local background scrape failed for Room ${roomId}:`, scrapeErr.message);
+            console.error(`Local background scrape failed for Room ${comboId}:`, scrapeErr.message);
             // Update title to let user know it failed
-            await Link.findByIdAndUpdate(roomId, { title: 'Falha ao coletar dados (Verifique o Link)' });
+            await Link.findByIdAndUpdate(comboId, { title: 'Falha ao coletar dados (Verifique o Link)' });
           }
         });
       }
@@ -478,6 +493,11 @@ app.post('/api/listings/scrape/:id', authenticateToken, async (req, res) => {
             const todayStr = new Date().toISOString().split('T')[0];
             await PriceRecord.findOneAndUpdate(
               { linkId: id, date: todayStr },
+              { pricePerNight: scrapedData.pricePerNight, totalPrice: scrapedData.currentPrice },
+              { upsert: true }
+            );
+            await RoomPriceRecord.findOneAndUpdate(
+              { roomId: link.roomId, date: todayStr },
               { pricePerNight: scrapedData.pricePerNight, totalPrice: scrapedData.currentPrice },
               { upsert: true }
             );

@@ -3,6 +3,8 @@ import mongoose from 'mongoose';
 import { connectDB } from './db.js';
 import Link from './models/Link.js';
 import PriceRecord from './models/PriceRecord.js';
+import UserLink from './models/UserLink.js';
+import RoomPriceRecord from './models/RoomPriceRecord.js';
 import { scrapeListing } from './scraper.js';
 
 // Load environment variables for standalone execution
@@ -32,12 +34,18 @@ export async function runCronScrape() {
       // Retrieve the link details from the database by ID or if not present, fetch from argv[3]
       const fallbackUrl = process.argv[3];
       if (fallbackUrl) {
-        activeLinks = [new Link({ _id: specificLinkId, url: fallbackUrl })];
+        const roomId = specificLinkId.split('_')[0];
+        activeLinks = [new Link({ _id: specificLinkId, roomId, url: fallbackUrl })];
       }
     }
   } else {
-    // Fetch active listings: check-out date is today or in the future, OR empty/null
+    // 1. Get all linkIds that are currently tracked by users
+    const trackedUserLinks = await UserLink.find({}).lean();
+    const trackedLinkIds = Array.from(new Set(trackedUserLinks.map(ul => ul.linkId)));
+
+    // 2. Fetch active listings: check-out date is today or in the future, OR empty/null, and tracked
     activeLinks = await Link.find({
+      _id: { $in: trackedLinkIds },
       $or: [
         { checkOut: { $gte: todayStr } },
         { checkOut: '' },
@@ -77,6 +85,14 @@ export async function runCronScrape() {
       if (scrapedData.currentPrice !== null) {
         await PriceRecord.findOneAndUpdate(
           { linkId: link._id, date: todayStr },
+          {
+            pricePerNight: scrapedData.pricePerNight,
+            totalPrice: scrapedData.currentPrice
+          },
+          { upsert: true }
+        );
+        await RoomPriceRecord.findOneAndUpdate(
+          { roomId: link.roomId, date: todayStr },
           {
             pricePerNight: scrapedData.pricePerNight,
             totalPrice: scrapedData.currentPrice

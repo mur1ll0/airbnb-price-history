@@ -477,7 +477,7 @@ function showModal(listing) {
   }
 
   // Draw history chart
-  drawChart(history, listing.nights);
+  drawChart(history, listing.generalPriceHistory || [], listing.nights);
 
   // Configure single listing manual update button
   const modalBtnUpdate = document.getElementById('modal-btn-update');
@@ -551,38 +551,63 @@ function renderBreakdownGauge(label, value, gradient) {
 }
 
 // Render Chart using Chart.js
-function drawChart(history, nights) {
+function drawChart(history, generalHistory, nights) {
   const ctx = document.getElementById('priceHistoryChart').getContext('2d');
   
   if (chartInstance) {
     chartInstance.destroy();
   }
 
-  if (history.length === 0) return;
+  if (history.length === 0 && (!generalHistory || generalHistory.length === 0)) return;
 
-  // Sort history chronologically for the chart
-  const sorted = [...history].sort((a, b) => a.date.localeCompare(b.date));
+  // Merge and sort all unique dates chronologically
+  const allDates = Array.from(new Set([
+    ...history.map(h => h.date),
+    ...(generalHistory || []).map(h => h.date)
+  ])).sort((a, b) => a.localeCompare(b));
   
-  const labels = sorted.map(h => formatDateString(h.date));
-  const dataNightly = sorted.map(h => h.pricePerNight);
-  const dataTotal = sorted.map(h => h.totalPrice);
+  const labels = allDates.map(date => formatDateString(date));
+  
+  const historyMap = Object.fromEntries(history.map(h => [h.date, h]));
+  const generalMap = Object.fromEntries((generalHistory || []).map(h => [h.date, h]));
+
+  const dataNightly = allDates.map(date => historyMap[date] ? historyMap[date].pricePerNight : null);
+  const dataGeneral = allDates.map(date => generalMap[date] ? generalMap[date].pricePerNight : null);
+
+  const datasets = [];
+
+  if (history.length > 0) {
+    datasets.push({
+      label: 'Diária no Período (R$)',
+      data: dataNightly,
+      borderColor: '#ff385c',
+      backgroundColor: 'rgba(255, 56, 92, 0.04)',
+      borderWidth: 3,
+      tension: 0.3,
+      fill: true,
+      yAxisID: 'y'
+    });
+  }
+
+  if (generalHistory && generalHistory.length > 0) {
+    datasets.push({
+      label: 'Diária Geral do Quarto (R$)',
+      data: dataGeneral,
+      borderColor: '#0284c7', // Sky blue
+      backgroundColor: 'transparent',
+      borderWidth: 2,
+      borderDash: [5, 5],
+      tension: 0.3,
+      fill: false,
+      yAxisID: 'y'
+    });
+  }
 
   chartInstance = new Chart(ctx, {
     type: 'line',
     data: {
       labels: labels,
-      datasets: [
-        {
-          label: 'Preço/Noite (R$)',
-          data: dataNightly,
-          borderColor: '#ff385c',
-          backgroundColor: 'rgba(255, 56, 92, 0.05)',
-          borderWidth: 3,
-          tension: 0.3,
-          fill: true,
-          yAxisID: 'y'
-        }
-      ]
+      datasets: datasets
     },
     options: {
       responsive: true,
@@ -599,9 +624,13 @@ function drawChart(history, nights) {
           callbacks: {
             label: function(context) {
               const val = context.raw;
-              const index = context.dataIndex;
-              const tot = dataTotal[index];
-              return `Diária: R$ ${formatNumber(val)} | Total: R$ ${formatNumber(tot)}`;
+              if (val === null || val === undefined) return '';
+              const datasetLabel = context.dataset.label || '';
+              if (datasetLabel.includes('Período')) {
+                const total = val * nights;
+                return `${datasetLabel}: R$ ${formatNumber(val)} (Total: R$ ${formatNumber(total)})`;
+              }
+              return `${datasetLabel}: R$ ${formatNumber(val)}`;
             }
           }
         }
