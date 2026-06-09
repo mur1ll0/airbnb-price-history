@@ -179,11 +179,15 @@ export async function scrapeListing(url) {
 
     // Check if dates are unavailable on the page
     const lowerBody = bodyText.toLowerCase();
-    const isUnavailable = lowerBody.includes('essas datas não estão disponíveis') || 
-                          lowerBody.includes('datas não estão disponíveis') ||
-                          lowerBody.includes('datas indisponíveis') ||
-                          lowerBody.includes('indisponível') ||
-                          lowerBody.includes('indisponíveis');
+    let isUnavailable = false;
+    
+    if (currentPrice === null) {
+      isUnavailable = lowerBody.includes('essas datas não estão disponíveis') || 
+                      lowerBody.includes('datas não estão disponíveis') ||
+                      lowerBody.includes('datas indisponíveis') ||
+                      lowerBody.includes('indisponível') ||
+                      lowerBody.includes('indisponíveis');
+    }
 
     const discountPercent = originalPrice && currentPrice && originalPrice > currentPrice
       ? parseFloat((((originalPrice - currentPrice) / originalPrice) * 100).toFixed(2))
