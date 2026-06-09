@@ -21,7 +21,7 @@ export async function connectDB() {
     return mongoose.connection;
   }
 
-  const mongoUri = process.env.MONGO_URI;
+  const mongoUri = process.env.MONGO_URI || process.env.MONGODB_URI;
   if (!mongoUri) {
     console.warn('[database] MONGO_URI is not defined in environment variables; skipping connection.');
     return null;

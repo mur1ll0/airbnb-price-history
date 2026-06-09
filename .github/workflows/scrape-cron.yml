@@ -43,5 +43,5 @@ jobs:
             node src/cron-scraper.js
           fi
         env:
-          MONGO_URI: ${{ secrets.MONGO_URI }}
+          MONGO_URI: ${{ secrets.MONGO_URI || secrets.MONGODB_URI }}
           NODE_ENV: production
